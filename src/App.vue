@@ -2,7 +2,7 @@
     <div class="app-container">
         <!-- 顶部Header -->
         <mt-header fixed title="shop-test"></mt-header>
-        <h1>test</h1>
+        <h1>{{msg}}</h1>
         <!-- 中间路由区域 -->
 
         <!-- 底部TabBar -->
@@ -29,7 +29,12 @@
 
 <script>
 export default {
-    name: 'App'
+    name: 'App',
+    data(){
+        return{
+            msg: 'shop-test'
+        }
+    }
 }
 </script>
 
