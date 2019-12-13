@@ -8,6 +8,7 @@ import resource from 'vue-resource';
 Vue.use(resource);
 
 import axios from 'axios'
+axios.defaults.baseURL = 'http://localhost/test/tp5/public/index.php'
 Vue.prototype.$axios= axios
 
 //mint

@@ -2,7 +2,7 @@
     <div>
         <!-- 轮播图 -->
         <mt-swipe :auto="2000">
-            <mt-swipe-item v-for="item in swipe_list" :key="item.swipe_id">
+            <mt-swipe-item v-for="item in swipe_list" :key="item.id">
                 <img v-bind:src="item.url"/>
             </mt-swipe-item>
         </mt-swipe>
@@ -10,7 +10,7 @@
         <!-- 六宫格 -->
         <ul class="mui-table-view mui-grid-view mui-grid-9">
             <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
-                <router-link to="/HomePage/newList">
+                <router-link to="/home/newList">
                     <img src="../../assets/grid6/menu1.png" alt=""/>
                     <div class="mui-media-body">新闻咨询</div>
                 </router-link>
@@ -52,25 +52,22 @@
 </template>
 
 <script>
-    import { Toast } from 'mint-ui'
     export default {
         data(){
             return{
                 num: 1,
-                swipe_url: '/index/store/getSwipeList',
+                url: 'http://localhost/test/tp5/public/index.php/index/store/swipe',
                 swipe_list: []
             }
         },
         methods:{
             getSwipe(){
-                this.$axios.get(this.swipe_url).then((response)=>{
-                    if(response.data.code !== 0){
-                        Toast('图片加载失败');
-                    }else{
-                        this.swipe_list = response.data.data;
-                    }
+                this.$axios.get(this.url).then((response)=>{
+
+                    this.swipe_list = response.data;
+                    console.log(this.swipe_list)
                 }).catch((response)=>{
-                    Toast('服务器异常');
+                    console.log(123123);
                 })
 
             }
