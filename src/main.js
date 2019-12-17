@@ -18,11 +18,16 @@ Vue.use(Mint);
 
 import App from './App.vue';
 
-//router组件
+//Mui组件
 import '../static/Mui/css/mui.css';
 import '../static/icon/style.css'
 import '../static/icon/icons-extra.css'
 
+//时间过滤器
+import moment from 'moment';
+Vue.filter('timeFormat', function(dateStr, pattern = 'YYYY-MM-DD HH:mm:ss') {
+    return moment(moment.unix(dateStr)).format(pattern);
+})
 
 new Vue({
     el:'#app',

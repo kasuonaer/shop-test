@@ -1,17 +1,15 @@
 <template>
     <div>
         <ul class="mui-table-view">
-            <li class="mui-table-view-cell mui-media" v-for="(item, index) in newList" v-on:click="addNum(index)">
-                <router-link :to="{path: '/HomePage/newInfo', query: {id: item.new_id}}">
-                    <img class="mui-media-object mui-pull-left" :src="item.new_url">
-                    <div class="mui-media-body">
-                        <h1 class="title">{{item.new_title}}</h1>
-                        <p class='mui-ellipsis'>
-                            <span>时间:{{item.new_time}}</span>
-                            <span>点击:{{item.new_click}}次</span>
-                        </p>
-                    </div>
-                </router-link>
+            <li class="mui-table-view-cell mui-media" v-for="(item, index) in newList" v-on:click="addNum(item.new_id)">
+                <img class="mui-media-object mui-pull-left" :src="item.new_url">
+                <div class="mui-media-body">
+                    <h1 class="title">{{item.new_title}}</h1>
+                    <p class='mui-ellipsis'>
+                        <span>时间:{{item.new_time | timeFormat}}</span>
+                        <span>点击:{{item.new_click}}次</span>
+                    </p>
+                </div>
             </li>
         </ul>
     </div>
@@ -25,6 +23,7 @@
             return{
                 num: 0,
                 newListUrl: '/index/store/getNewList',
+                newClickAddUrl: '/index/store/addClick',
                 newList: []
             }
         },
@@ -37,16 +36,24 @@
                         this.newList = response.data.data;
                     }
 
+                }).catch((response)=>{
+                    Toast('服务器异常');
                 })
             },
 
-            addNum: function(index){
-
+            addNum: function(new_id){
+                this.$axios.get(this.newClickAddUrl, {params:{new_id: new_id}}).then((response)=>{
+                    if(response.data.code !== 0){
+                        this.$router.go(0);
+                    }else{
+                        this.$router.push({path: "/HomePage/newInfo", query: {id: new_id}});
+                    }
+                })
             }
         },
         created(){
             this.getNewList()
-        }
+        },
     }
 </script>
 

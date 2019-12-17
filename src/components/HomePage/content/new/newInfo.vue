@@ -1,24 +1,92 @@
 <template>
-    <div>
-        <h1>newInfo{{this.$route.query.id}}</h1>
-    </div>
+    <div class="new-container">
+        <!-- 抬头 -->
+        <h1 class="title-content">{{newInfo.new_title}}</h1>
+        <p class="title-affiliated">
+            <span>发表时间:{{newInfo.new_time | timeFormat}}</span>
+            <span>点击:{{newInfo.new_click}}次</span>
+        </p>
+        <hr/>
 
+        <!-- 内容 -->
+        <div class="content-container" v-html="newInfo.new_content"></div>
+        <hr/>
+        <!-- 评论 -->
+        <comment-container></comment-container>
+    </div>
 </template>
 
 <script>
+    import {Toast} from 'mint-ui';
+    import comment from '@/components/common/comment';
     export default {
         name: 'newInfo',
+        data(){
+            return{
+
+                new_id: this.$route.query.id,
+                newInfoUrl: '/index/store/getNewInfo',
+                newInfo: []
+            }
+        },
         methods: {
-            show1(){
-                console.log(this);
+            getNewInfo(){
+                var that = this;
+                setTimeout(function () {
+                    that.$axios.get(that.newInfoUrl, {params:{new_id: that.new_id}}).then((response)=>{
+                        if(response.data.code !== 0){
+                            Toast('获取新闻详情失败');
+                        }else{
+                            that.newInfo = response.data.data;
+                            console.log(that.newInfo)
+                        }
+                    }).catch((response)=>{
+                        Toast('服务器异常');
+                    })
+                }, 50)
+                /*this.$axios.get(this.newInfoUrl, {params:{new_id: this.new_id}}).then((response)=>{
+                    if(response.data.code !== 0){
+                        Toast('获取新闻详情失败');
+                    }else{
+                        this.newInfo = response.data.data;
+                        console.log(this.newInfo)
+                    }
+                }).catch((response)=>{
+                    Toast('服务器异常');
+                })*/
+
             }
         },
         created() {
-            console.log(this.$route)
+            this.getNewInfo();
+        },
+        components:{
+            'comment-container': comment
         }
     }
 </script>
 
-<style scoped>
+<style lang="less">
+    .new-container{
+        margin: auto 5px;
+        .title-content{
+            height: 30px;
+            line-height: 30px;
+            font-size: 18px;
+            color: #f00;
+            text-align: center;
+        }
+        .title-affiliated{
+            font-size: 12px;
+            display: flex;
+            justify-content: space-between;
+
+        }
+        .content-container{
+            img{
+                width: 100%;
+            }
+        }
+    }
 
 </style>
