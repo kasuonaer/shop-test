@@ -29,7 +29,7 @@ Vue.filter('timeFormat', function(dateStr, pattern = 'YYYY-MM-DD HH:mm:ss') {
     return moment(moment.unix(dateStr)).format(pattern);
 })
 
-new Vue({
+var vm = new Vue({
     el:'#app',
     data:{
 

@@ -23,7 +23,7 @@
             </div>
         </div>
 
-        <mt-button type="danger" size="large" class="danger-button" plain v-on:click="getComment">加载更多</mt-button>
+        <mt-button type="danger" size="large" class="danger-button" plain v-on:click="getComment" v-if="isDisabledComment">加载更多</mt-button>
     </div>
 </template>
 
@@ -39,6 +39,7 @@
                 //发表评论
                 comment_content: '',
                 user_name: '',
+                isDisabledComment: true
             }
         },
         methods:{
@@ -48,7 +49,7 @@
                     console.log(response.data.data.data);
                     this.commentList =  response.data.data.data;
                     if(this.page_num >= response.data.data.total){
-                        Toast('已完全加载');
+                        this.isDisabledComment = false;
                     }
                 }).catch((response)=>{
                     console.log(response);
