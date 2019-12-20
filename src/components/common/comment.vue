@@ -1,14 +1,79 @@
 <template>
     <div class="comment-container">
+        <!-- 发表评论 -->
         <strong class="comment-remind">发表评论</strong>
         <hr/>
-        <textarea placeholder="请输入..." class="comment-text"></textarea>
-        <mt-button type="primary" size="large">发表评论</mt-button>
+        <textarea placeholder="请输入..." class="comment-text" v-model="comment_content"></textarea>
+        <div class="mui-input-row">
+            <label>用户名:</label>
+            <input type="text" class="mui-input-clear" placeholder="请输入用户名" v-model="user_name">
+        </div>
+        <mt-button type="primary" size="large" class="primary-button" v-on:click="addComment">发表评论</mt-button>
+         <!-- 评论列表 -->
+        <div class="comment-list">
+            <div class="comment-item" v-for="(item, index) in commentList">
+                <div class="comment-title">
+                    <span>第{{index + 1}}楼</span>
+                    <span>用户:{{item.user_name}}</span>
+                    <span>发表时间:{{item.comment_time | timeFormat}}</span>
+                </div>
+                <div class="comment-body">
+                    <span>{{item.comment_content}}</span>
+                </div>
+            </div>
+        </div>
+
+        <mt-button type="danger" size="large" class="danger-button" plain v-on:click="getComment">加载更多</mt-button>
     </div>
 </template>
 
 <script>
-    export default {}
+    import { Toast } from 'mint-ui'
+    export default {
+        data(){
+            return{
+                getCommentUrl: '/index/store/getCommentList',
+                addCommentUrl: '/index/store/addComment',
+                page_num: 0,
+                commentList: [],
+                //发表评论
+                comment_content: '',
+                user_name: '',
+            }
+        },
+        methods:{
+            getComment(){
+                this.page_num += 5;
+                this.$axios.get(this.getCommentUrl + '?id=' + this.id + '&page_num=' + this.page_num).then((response)=>{
+                    console.log(response.data.data.data);
+                    this.commentList =  response.data.data.data;
+                    if(this.page_num >= response.data.data.total){
+                        Toast('已完全加载');
+                    }
+                }).catch((response)=>{
+                    console.log(response);
+                })
+            },
+            addComment(){
+                var param = new URLSearchParams();
+                param.append('id', this.id);
+                param.append('comment_content', this.comment_content);
+                param.append('user_name', this.user_name);
+                this.$axios.post(this.addCommentUrl, param).then((response)=>{
+                    if(response.data.code == 0){
+                        this.reload();
+                    }
+                }).catch((response)=>{
+
+                })
+            }
+        },
+        created(){
+            this.getComment();
+        },
+        props: ['id'],
+        inject: ['reload'],
+    }
 </script>
 
 <style lang="less" scoped>
@@ -17,7 +82,42 @@
             font-size: 16px;
         }
         .comment-text{
+            font-size: 14px;
             min-height: 100px;
+            margin: 0;
+        }
+        textarea::-webkit-input-placeholder{
+            font-size: 14px;
+        }
+        .mui-input-row{
+            color: #8f8f94;
+            font-size: 14px;
+            input{
+                font-size: 14px;
+                padding-top:5px;
+            }
+            ::-webkit-input-placeholder{
+                font-size: 14px;
+            }
+        }
+        .comment-list{
+            margin: 5px 0;
+            .comment-item{
+                font-size: 13px;
+                .comment-title{
+                    display: flex;
+                    justify-content: space-around;
+                    background: #cccccc;
+                    span{
+                        line-height: 25px;
+                    }
+                }
+                .comment-body{
+                    line-height: 25px;
+                    text-indent: 13px;
+
+                }
+            }
         }
     }
 </style>

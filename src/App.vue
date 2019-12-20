@@ -5,7 +5,7 @@
         <!-- 中间路由区域 -->
         <!-- 动画效果 -->
         <transition>
-            <router-view></router-view>
+            <router-view v-if="isRouterAlive"></router-view>
         </transition>
         <!-- 底部TabBar -->
         <nav class="mui-bar mui-bar-tab">
@@ -35,9 +35,23 @@
 <script>
 export default {
     name: 'App',
+    provide(){
+        return{
+            reload: this.reload
+        }
+    },
     data(){
         return{
+            isRouterAlive: true,
             msg: 'shop-test'
+        }
+    },
+    methods:{
+        reload(){
+            this.isRouterAlive = false;
+            this.$nextTick(function(){
+                this.isRouterAlive = true;
+            })
         }
     }
 }

@@ -12,7 +12,7 @@
         <div class="content-container" v-html="newInfo.new_content"></div>
         <hr/>
         <!-- 评论 -->
-        <comment-container></comment-container>
+        <comment-container v-bind:id="this.new_id"></comment-container>
     </div>
 </template>
 
@@ -23,7 +23,6 @@
         name: 'newInfo',
         data(){
             return{
-
                 new_id: this.$route.query.id,
                 newInfoUrl: '/index/store/getNewInfo',
                 newInfo: []
@@ -31,20 +30,7 @@
         },
         methods: {
             getNewInfo(){
-                var that = this;
-                setTimeout(function () {
-                    that.$axios.get(that.newInfoUrl, {params:{new_id: that.new_id}}).then((response)=>{
-                        if(response.data.code !== 0){
-                            Toast('获取新闻详情失败');
-                        }else{
-                            that.newInfo = response.data.data;
-                            console.log(that.newInfo)
-                        }
-                    }).catch((response)=>{
-                        Toast('服务器异常');
-                    })
-                }, 50)
-                /*this.$axios.get(this.newInfoUrl, {params:{new_id: this.new_id}}).then((response)=>{
+                this.$axios.get(this.newInfoUrl, {params:{new_id: this.new_id}}).then((response)=>{
                     if(response.data.code !== 0){
                         Toast('获取新闻详情失败');
                     }else{
@@ -53,8 +39,7 @@
                     }
                 }).catch((response)=>{
                     Toast('服务器异常');
-                })*/
-
+                })
             }
         },
         created() {
