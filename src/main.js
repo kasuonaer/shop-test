@@ -20,8 +20,8 @@ import App from './App.vue';
 
 //Mui组件
 import '../static/Mui/css/mui.css';
-import '../static/icon/style.css'
-import '../static/icon/icons-extra.css'
+import '../static/Mui/icon/style.css'
+import '../static/Mui/icon/icons-extra.css'
 
 //时间过滤器
 import moment from 'moment';
