@@ -3,7 +3,7 @@
         <!-- 轮播图 -->
         <mt-swipe :auto="2000">
             <mt-swipe-item v-for="item in swipe_list" :key="item.swipe_id">
-                <img v-bind:src="item.url"/>
+                <img v-lazy="item.url">
             </mt-swipe-item>
         </mt-swipe>
 
@@ -16,7 +16,7 @@
                 </router-link>
             </li>
             <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
-                <router-link to="/home/shareImg">
+                <router-link to="/HomePage/shareImg">
                     <img src="../../assets/grid6/menu2.png" alt=""/>
                     <div class="mui-media-body">图片分享</div>
                 </router-link>
@@ -52,7 +52,8 @@
 </template>
 
 <script>
-    import { Toast } from 'mint-ui'
+    import { Lazyload, Toast } from 'mint-ui';
+
     export default {
         data(){
             return{
@@ -82,12 +83,19 @@
 </script>
 
 <style lang="less" scoped>
+
     .mint-swipe{
         height: 200px;
 
         img{
             width: 100%;
             height: 100%;
+        }
+        img[lazy=loading] {
+            width: 100%;
+            height: 100%;
+            margin: auto;
+            background: #cccccc;
         }
     }
     .mui-table-view.mui-grid-view.mui-grid-9{

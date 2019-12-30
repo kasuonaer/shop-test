@@ -7,7 +7,7 @@ import ShopMember from '@/components/ShopMember/ShopMember'
 import ShopSearch from '@/components/ShopSearch/ShopSearch'
 import newList from '@/components/HomePage/content/new/newList'
 import newInfo from '@/components/HomePage/content/new/newInfo'
-
+import shareImg from '@/components/HomePage/content/shareImg/shareImgList'
 
 Vue.use(Router)
 
@@ -15,7 +15,7 @@ export default new Router({
     routes: [
         {
             path: '/',
-            name: 'HomePage',
+            name: 'home',
             redirect: '/HomePage'
         },
         {
@@ -42,7 +42,11 @@ export default new Router({
         },{
             path: '/HomePage/newInfo',
             name: 'newInfo',
-            component:newInfo
+            component: newInfo
+        },{
+            path: '/HomePage/shareImg',
+            name: 'shareImg',
+            component: shareImg
         }
     ],
     linkActiveClass: 'mui-active'

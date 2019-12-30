@@ -1,8 +1,8 @@
 <template>
     <div>
         <ul class="mui-table-view">
-            <li class="mui-table-view-cell mui-media" v-for="(item, index) in newList" v-on:click="addNum(item.new_id)">
-                <img class="mui-media-object mui-pull-left" :src="item.new_url">
+            <li class="mui-table-view-cell mui-media" v-for="(item, index) in newList" :key="item.new_id" v-on:click="addNum(item.new_id)">
+                <img class="mui-media-object mui-pull-left" v-lazy="item.new_url">
                 <div class="mui-media-body">
                     <h1 class="title">{{item.new_title}}</h1>
                     <p class='mui-ellipsis'>
@@ -59,6 +59,12 @@
 
 <style lang="less" scoped>
     li{
+        img[lazy=loading] {
+            width: 100%;
+            height: 100%;
+            margin: auto;
+            background: #cccccc;
+        }
         .title{
             font-size: 14px;
             color: #555555;
