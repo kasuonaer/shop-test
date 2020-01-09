@@ -1,7 +1,9 @@
 <template>
     <div class="app-container">
         <!-- 顶部Header -->
-        <mt-header fixed title="shop-ByVue"></mt-header>
+        <mt-header fixed title="shop-ByVue">
+            <mt-button slot="left" icon="back" v-if="isHome" v-on:click="goBack()"></mt-button>
+        </mt-header>
         <!-- 中间路由区域 -->
         <!-- 动画效果 -->
         <transition>
@@ -42,6 +44,7 @@ export default {
     },
     data(){
         return{
+            isHome: true,
             isRouterAlive: true,
             msg: 'shop-test'
         }
@@ -52,6 +55,21 @@ export default {
             this.$nextTick(function(){
                 this.isRouterAlive = true;
             })
+        },
+        currentRouter(){
+            console.log(this.$route);
+            this.$route.path == '/HomePage' ? this.isHome = false : this.isHome = true
+        },
+        goBack(){
+            console.log(this.$router.back(-1))
+        }
+    },
+    mounted(){
+        this.currentRouter();
+    },
+    watch: {
+        $route(to, from) {
+            this.$route.path == '/HomePage' ? this.isHome = false : this.isHome = true
         }
     }
 }

@@ -12,7 +12,7 @@
         <div class="content-container" v-html="newInfo.new_content"></div>
         <hr/>
         <!-- 评论 -->
-        <comment-container v-bind:id="this.new_id"></comment-container>
+        <comment-container :id="this.new_id" :parent_type="this.new_type"></comment-container>
     </div>
 </template>
 
@@ -23,9 +23,10 @@
         name: 'newInfo',
         data(){
             return{
+                new_type: 1,
                 new_id: this.$route.query.id,
                 newInfoUrl: '/index/store/getNewInfo',
-                newInfo: []
+                newInfo: [],
             }
         },
         methods: {

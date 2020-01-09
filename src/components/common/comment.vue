@@ -1,7 +1,7 @@
 <template>
     <div class="comment-container">
         <!-- 发表评论 -->
-        <strong class="comment-remind">发表评论</strong>
+        <strong class="comment-remind">评论({{comments_count}})</strong>
         <hr/>
         <textarea placeholder="请输入..." class="comment-text" v-model="comment_content"></textarea>
         <div class="mui-input-row">
@@ -35,6 +35,7 @@
                 getCommentUrl: '/index/store/getCommentList',
                 addCommentUrl: '/index/store/addComment',
                 page_num: 5,
+                comments_count: 0,
                 commentList: [],
                 //发表评论
                 comment_content: '',
@@ -48,6 +49,7 @@
                     console.log(response.data.data);
                     this.commentList =  response.data.data.data;
                     this.page_num >= response.data.data.total ? this.isDisabledComment = false : this.isDisabledComment = true
+                    this.comments_count = response.data.data.total;
                 }).catch((response)=>{
                     console.log(response);
                 })
@@ -55,6 +57,7 @@
             addComment(){
                 var param = new URLSearchParams();
                 param.append('id', this.id);
+                param.append('parent_type', this.parent_type);
                 param.append('comment_content', this.comment_content);
                 param.append('user_name', this.user_name);
                 this.$axios.post(this.addCommentUrl, param).then((response)=>{
@@ -64,6 +67,8 @@
                 }).catch((response)=>{
 
                 })
+                this.user_name = '';
+                this.comment_content = '';
             },
             getCommentMore(){
                 this.page_num += 5;
@@ -73,7 +78,7 @@
         created(){
             this.getComment();
         },
-        props: ['id'],
+        props: ['id', 'parent_type'],
         inject: ['reload'],
     }
 </script>

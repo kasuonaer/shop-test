@@ -1,7 +1,7 @@
 <template>
     <div>
         <ul class="mui-table-view">
-            <li class="mui-table-view-cell mui-media" v-for="(item, index) in newList" :key="item.new_id" v-on:click="addNum(item.new_id)">
+            <li class="mui-table-view-cell mui-media" v-for="(item, index) in newList" :key="item.new_id" v-on:click="getNewInfo(item.new_id)">
                 <img class="mui-media-object mui-pull-left" v-lazy="item.new_url">
                 <div class="mui-media-body">
                     <h1 class="title">{{item.new_title}}</h1>
@@ -41,7 +41,7 @@
                 })
             },
 
-            addNum: function(new_id){
+            getNewInfo: function(new_id){
                 this.$axios.get(this.newClickAddUrl, {params:{new_id: new_id}}).then((response)=>{
                     if(response.data.code !== 0){
                         this.$router.go(0);

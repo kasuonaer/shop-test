@@ -4,20 +4,19 @@
             <div id="sliderSegmentedControl" class="mui-scroll-wrapper mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
                 <div class="mui-scroll">
                     <a :class="['mui-control-item', item.shareImg_type_id == 0 ? 'mui-active' : '']" v-for="(item, index) in shareImgTypeList" :key="item.shareImg_type_id" v-on:click="getShareImgListById(item.shareImg_type_id)">{{item.shareImg_type_name}}</a>
-
                 </div>
             </div>
 
         </div>
         <div>
             <ul class="img-item">
-                <li v-for="(item, index) in shareImgList">
+                <router-link :to="'/HomePage/shareImgInfo/' + item.shareImg_id" v-for="(item, index) in shareImgList" tag="li">
                     <img v-lazy="item.shareImg_url">
                     <div class="shareImg-info">
                         <h1 class="shareImg-title">{{item.shareImg_title}}</h1>
                         <span class="shareImg-content">{{item.shareImg_content}}</span>
                     </div>
-                </li>
+                </router-link>
             </ul>
         </div>
     </div>
@@ -25,12 +24,13 @@
 
 <script>
     import mui from '@/../static/Mui/js/mui.js';
-
+    import {Toast} from 'mint-ui';
     export default {
         data(){
             return{
                 shareImgTypeUrl: '/index/store/getShareImgTypeList',
                 shareImgListUrl: '/index/store/getShareImgList',
+                shareImgInfoUrl: '/index/store/getShareImgInfo',
                 shareImgTypeList: [],
                 shareImgList: []
             }
@@ -76,7 +76,6 @@
 
 <style lang="less" scoped>
     * {touch-action: pan-y;};
-
 
     .img-item{
         list-style: none;

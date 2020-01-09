@@ -8,6 +8,7 @@ import ShopSearch from '@/components/ShopSearch/ShopSearch'
 import newList from '@/components/HomePage/content/new/newList'
 import newInfo from '@/components/HomePage/content/new/newInfo'
 import shareImg from '@/components/HomePage/content/shareImg/shareImgList'
+import shareImgInfo from '@/components/HomePage/content/shareImg/shareImgInfo'
 
 Vue.use(Router)
 
@@ -47,6 +48,10 @@ export default new Router({
             path: '/HomePage/shareImg',
             name: 'shareImg',
             component: shareImg
+        },{
+            path: '/HomePage/shareImgInfo',
+            name: 'shareImgInfo',
+            component: shareImgInfo
         }
     ],
     linkActiveClass: 'mui-active'
