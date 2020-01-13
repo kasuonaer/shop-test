@@ -12,7 +12,7 @@
         <div class="content-container" v-html="newInfo.new_content"></div>
         <hr/>
         <!-- 评论 -->
-        <comment-container :id="this.new_id" :parent_type="this.new_type"></comment-container>
+        <comment-container :parent_id="this.new_id" :parent_type="this.new_type"></comment-container>
     </div>
 </template>
 
@@ -61,6 +61,7 @@
             font-size: 18px;
             color: #f00;
             text-align: center;
+            overflow: hidden;
         }
         .title-affiliated{
             font-size: 12px;

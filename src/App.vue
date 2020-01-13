@@ -57,11 +57,10 @@ export default {
             })
         },
         currentRouter(){
-            console.log(this.$route);
             this.$route.path == '/HomePage' ? this.isHome = false : this.isHome = true
         },
         goBack(){
-            console.log(this.$router.back(-1))
+            this.$router.back(-1);
         }
     },
     mounted(){
@@ -77,7 +76,7 @@ export default {
 
 <style lang="less" scoped>
     .mint-header{
-        z-index: 99;
+        z-index: 1;
     }
     .app-container{
         padding-top: 40px;

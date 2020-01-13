@@ -3,7 +3,7 @@
         <!-- 发表评论 -->
         <strong class="comment-remind">评论({{comments_count}})</strong>
         <hr/>
-        <textarea placeholder="请输入..." class="comment-text" v-model="comment_content"></textarea>
+        <textarea id="comment_text" placeholder="请输入..." class="comment-text" v-model="comment_content"></textarea>
         <div class="mui-input-row">
             <label for="user_name">用户名:</label>
             <input id="user_name" type="text" class="mui-input-clear" placeholder="请输入用户名" v-model="user_name">
@@ -40,12 +40,12 @@
                 //发表评论
                 comment_content: '',
                 user_name: '',
-                isDisabledComment: true
+                isDisabledComment: true,
             }
         },
         methods:{
             getComment(){
-                this.$axios.get(this.getCommentUrl + '?id=' + this.id + '&page_num=' + this.page_num).then((response)=>{
+                this.$axios.get(this.getCommentUrl + '?parent_id=' + this.parent_id + '&parent_type=' + this.parent_type + '&page_num=' + this.page_num).then((response)=>{
                     console.log(response.data.data);
                     this.commentList =  response.data.data.data;
                     this.page_num >= response.data.data.total ? this.isDisabledComment = false : this.isDisabledComment = true
@@ -56,7 +56,7 @@
             },
             addComment(){
                 var param = new URLSearchParams();
-                param.append('id', this.id);
+                param.append('parent_id', this.parent_id);
                 param.append('parent_type', this.parent_type);
                 param.append('comment_content', this.comment_content);
                 param.append('user_name', this.user_name);
@@ -78,7 +78,7 @@
         created(){
             this.getComment();
         },
-        props: ['id', 'parent_type'],
+        props: ['parent_id', 'parent_type'],
         inject: ['reload'],
     }
 </script>
@@ -120,6 +120,7 @@
                         line-height: 25px;
                     }
                     .comment-info-user{
+                        white-space:nowrap;
                         width: 20%;
                         margin-right: 40px;
                     }

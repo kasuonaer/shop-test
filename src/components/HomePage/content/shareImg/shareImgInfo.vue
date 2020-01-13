@@ -1,13 +1,91 @@
 <template>
-
+    <div class="shareImg-container">
+        <h1 class="title-content">{{shareImgInfo.shareImg_title}}</h1>
+        <p class="title-affiliated">
+            <span>发表时间:{{shareImgInfo.shareImg_time | timeFormat}}</span>
+            <span>点击:{{shareImgInfo.shareImg_click}}次</span>
+        </p>
+        <hr/>
+        <!-- 内容 -->
+        <div class="content-container" v-html="shareImgInfo.shareImg_content"></div>
+        <hr/>
+        <comment-container :parent_id="this.shareImg_id" :parent_type="this.shareImg_type"></comment-container>
+    </div>
 </template>
 
 <script>
+    import {Toast} from 'mint-ui';
+    import comment from '@/components/common/comment';
     export default{
+        data(){
+            return{
+                //评论类型 1：文章，2：图片
+                shareImg_type: 2,
+                shareImg_id: this.$route.query.id,
+                shareImgInfo_url: '/index/store/getShareImgInfo',
+                shareImgAddClick: '/index/store/addShareImgClick',
+                shareImgClick: 0,
+                shareImgInfo: []
 
+            }
+        },
+        methods:{
+            getShareImgInfo(){
+                this.$axios.get(this.shareImgInfo_url, {params:{shareImg_id: this.shareImg_id}}).then((response)=>{
+                    if(response.data.code !== 0){
+                        Toast('数据获取失败')
+                    }else{
+                        this.shareImgInfo = response.data.data;
+                    }
+                }).catch((response)=>{
+                    Toast('服务器异常')
+                })
+            },
+            addClick(){
+                this.$axios.get(this.shareImgAddClick, {params:{shareImg_id: this.shareImg_id}}).then((response)=>{
+                    if(response.data.code == 0){
+                        this.getShareImgInfo();
+                    }
+                }).catch((response)=>{
+                    Toast('服务器异常')
+                })
+            }
+        },
+        created(){
+            this.addClick();
+        },
+        mounted(){
+            this.getShareImgInfo();
+        },
+        components:{
+            'comment-container': comment
+        }
     }
 </script>
 
-<style scoped>
+<style lang="less">
+    .shareImg-container{
+        margin: auto 5px;
+        .title-content{
+            height: 30px;
+            line-height: 30px;
+            font-size: 18px;
+            color: #f00;
+            text-align: center;
+            overflow: hidden;
+        }
+        .title-affiliated{
+            font-size: 12px;
+            display: flex;
+            justify-content: space-between;
 
+        }
+        .content-container{
+            font-size: 14px;
+            text-indent:2em;
+            img{
+                width: 100%;
+            }
+        }
+    }
 </style>

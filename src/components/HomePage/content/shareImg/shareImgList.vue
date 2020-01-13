@@ -10,7 +10,7 @@
         </div>
         <div>
             <ul class="img-item">
-                <router-link :to="'/HomePage/shareImgInfo/' + item.shareImg_id" v-for="(item, index) in shareImgList" tag="li">
+                <router-link :to="'/HomePage/shareImgInfo?id=' + item.shareImg_id" v-for="(item, index) in shareImgList" tag="li" :key="item.shareImg_id">
                     <img v-lazy="item.shareImg_url">
                     <div class="shareImg-info">
                         <h1 class="shareImg-title">{{item.shareImg_title}}</h1>

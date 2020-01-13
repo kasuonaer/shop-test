@@ -23,7 +23,7 @@
             return{
                 num: 0,
                 newListUrl: '/index/store/getNewList',
-                newClickAddUrl: '/index/store/addClick',
+                newClickAddUrl: '/index/store/addNewClick',
                 newList: []
             }
         },
