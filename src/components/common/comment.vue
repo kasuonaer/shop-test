@@ -55,20 +55,25 @@
                 })
             },
             addComment(){
-                var param = new URLSearchParams();
-                param.append('parent_id', this.parent_id);
-                param.append('parent_type', this.parent_type);
-                param.append('comment_content', this.comment_content);
-                param.append('user_name', this.user_name);
-                this.$axios.post(this.addCommentUrl, param).then((response)=>{
-                    if(response.data.code == 0){
-                        this.getComment();
-                    }
-                }).catch((response)=>{
+                if(this.user_name && this.comment_content){
+                    let param = new URLSearchParams();
+                    param.append('parent_id', this.parent_id);
+                    param.append('parent_type', this.parent_type);
+                    param.append('comment_content', this.comment_content);
+                    param.append('user_name', this.user_name);
+                    this.$axios.post(this.addCommentUrl, param).then((response)=>{
+                        if(response.data.code == 0){
+                            this.getComment();
+                        }
+                    }).catch((response)=>{
 
-                })
-                this.user_name = '';
-                this.comment_content = '';
+                    })
+                    this.user_name = '';
+                    this.comment_content = '';
+                }else{
+                    Toast('信息不能为空');
+                }
+
             },
             getCommentMore(){
                 this.page_num += 5;

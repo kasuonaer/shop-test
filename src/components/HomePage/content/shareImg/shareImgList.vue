@@ -32,7 +32,7 @@
                 shareImgListUrl: '/index/store/getShareImgList',
                 shareImgInfoUrl: '/index/store/getShareImgInfo',
                 shareImgTypeList: [],
-                shareImgList: []
+                shareImgList: [],
             }
         },
         methods:{
@@ -55,6 +55,9 @@
                         Toast('获取分享图片分类列表失败');
                     }else{
                         this.shareImgList = response.data.data;
+                        for(let i = 0; i < this.shareImgList.length; i ++){
+                            this.shareImgList[i].shareImg_url = this.shareImgList[i].shareImg_url.split(',')[0]
+                        }
                         console.log(this.shareImgList);
                     }
                 }).catch((response)=>{

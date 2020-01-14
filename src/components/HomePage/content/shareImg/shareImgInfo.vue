@@ -6,9 +6,14 @@
             <span>点击:{{shareImgInfo.shareImg_click}}次</span>
         </p>
         <hr/>
+        <!-- 图片 -->
+        <div class="img-container" v-for="item in shareImgList">
+            <img class="img-list" :src="item" preview preview-text=""/>
+        </div>
         <!-- 内容 -->
         <div class="content-container" v-html="shareImgInfo.shareImg_content"></div>
         <hr/>
+
         <comment-container :parent_id="this.shareImg_id" :parent_type="this.shareImg_type"></comment-container>
     </div>
 </template>
@@ -16,6 +21,8 @@
 <script>
     import {Toast} from 'mint-ui';
     import comment from '@/components/common/comment';
+    import VuePreview from 'vue-preview'
+
     export default{
         data(){
             return{
@@ -24,8 +31,9 @@
                 shareImg_id: this.$route.query.id,
                 shareImgInfo_url: '/index/store/getShareImgInfo',
                 shareImgAddClick: '/index/store/addShareImgClick',
-                shareImgClick: 0,
-                shareImgInfo: []
+                shareImgInfo: [],
+                shareImgList: [],
+                shareImgListObj: []
 
             }
         },
@@ -36,6 +44,8 @@
                         Toast('数据获取失败')
                     }else{
                         this.shareImgInfo = response.data.data;
+                        this.shareImgList = this.shareImgInfo.shareImg_url.split(',');
+                        this.$previewRefresh();
                     }
                 }).catch((response)=>{
                     Toast('服务器异常')
@@ -51,11 +61,8 @@
                 })
             }
         },
-        created(){
-            this.addClick();
-        },
         mounted(){
-            this.getShareImgInfo();
+            this.addClick();
         },
         components:{
             'comment-container': comment
@@ -80,6 +87,22 @@
             justify-content: space-between;
 
         }
+        .img-container{
+            display: inline-block;
+            .img-list{
+                box-shadow: 0 0 2px #999;
+                width: 120px;
+                height: 120px;
+                padding: 2px;
+            }
+            img[lazy=loading] {
+                width: 100px;
+                height: 100px;
+                padding-left: 10px;
+                background: #cccccc;
+            }
+        }
+
         .content-container{
             font-size: 14px;
             text-indent:2em;
