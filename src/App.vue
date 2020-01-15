@@ -76,12 +76,11 @@ export default {
 
 <style lang="less" scoped>
     .mint-header{
-        z-index: 1;
+        z-index: 99;
     }
     .app-container{
         padding-top: 40px;
         padding-bottom: 50px;
-        overflow-x: hidden;
     }
 
     .v-enter{

@@ -8,7 +8,7 @@
         <hr/>
         <!-- 图片 -->
         <div class="img-container" v-for="item in shareImgList">
-            <img class="img-list" :src="item" preview preview-text=""/>
+            <img class="img-list" v-lazy="item" preview :preview-text="shareImgInfo.shareImg_title"/>
         </div>
         <!-- 内容 -->
         <div class="content-container" v-html="shareImgInfo.shareImg_content"></div>
@@ -38,7 +38,8 @@
             }
         },
         methods:{
-            getShareImgInfo(){
+            async getShareImgInfo(){
+                await this.addClick();
                 this.$axios.get(this.shareImgInfo_url, {params:{shareImg_id: this.shareImg_id}}).then((response)=>{
                     if(response.data.code !== 0){
                         Toast('数据获取失败')
@@ -52,17 +53,17 @@
                 })
             },
             addClick(){
-                this.$axios.get(this.shareImgAddClick, {params:{shareImg_id: this.shareImg_id}}).then((response)=>{
-                    if(response.data.code == 0){
-                        this.getShareImgInfo();
-                    }
-                }).catch((response)=>{
-                    Toast('服务器异常')
+                return new Promise((resolve, reject) => {
+                    this.$axios.get(this.shareImgAddClick, {params:{shareImg_id: this.shareImg_id}}).then((response)=>{
+                        resolve();
+                    }).catch((response)=>{
+                        Toast('服务器异常')
+                    })
                 })
-            }
+            },
         },
         mounted(){
-            this.addClick();
+            this.getShareImgInfo();
         },
         components:{
             'comment-container': comment
@@ -70,7 +71,7 @@
     }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
     .shareImg-container{
         margin: auto 5px;
         .title-content{
@@ -96,9 +97,9 @@
                 padding: 2px;
             }
             img[lazy=loading] {
-                width: 100px;
-                height: 100px;
-                padding-left: 10px;
+                width: 120px;
+                height: 120px;
+                padding: 2px;
                 background: #cccccc;
             }
         }

@@ -24,9 +24,6 @@ import '../static/Mui/icon/style.css'
 import '../static/Mui/icon/icons-extra.css'
 
 //缩略图
-import VuePreview from 'vue-preview'
-Vue.use(VuePreview)
-
 import preview from 'vue-photo-preview'
 import 'vue-photo-preview/dist/skin.css'
 Vue.use(preview)

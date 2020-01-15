@@ -52,7 +52,7 @@
     }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
     .new-container{
         margin: auto 5px;
         .title-content{
